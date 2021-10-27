@@ -10,8 +10,9 @@ module.exports = {
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, "public"),
+      directory: path.join(__dirname, "/dist"),
     },
+    historyApiFallback: true,
     compress: true,
     port: 3010,
   },
@@ -36,6 +37,10 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
+      },
+      {
+        test: /\.(png|jp(e*)g|svg|gif)$/,
+        use: ["file-loader"],
       },
     ],
   },
