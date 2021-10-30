@@ -4,7 +4,7 @@ import { addProduct, addPrice, subtractPrice } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch.js";
 import ProductsList from "./ProductsList.jsx";
 import { CardStyle } from "./styles/Card.style.js";
-import { Form, List } from "./styles/Products.style";
+import { Form } from "./styles/Products.style";
 
 const Products = ({ setStep }) => {
   const dispatch = useDispatch();
@@ -18,8 +18,8 @@ const Products = ({ setStep }) => {
 
   const handleSelect = (e) => {
     console.log("clicked", e.target);
-    if (e.target) {
-      setIsCurrent(e.target.id)
+    if (e.targe) {
+      setIsCurrent(e.target.id);
       dispatch(addPrice(Number(e.target.value)));
       setSelectedProd([...selectedProd, e.target.id]);
       console.log("Product selected");
@@ -55,7 +55,7 @@ const Products = ({ setStep }) => {
         <h3>Select product(s)</h3>
         <ul>
           {products?.map(({ id, title, price }) => (
-            <ProductsList
+            <li
               // color={isCurrent === id && isChecked ? "yellow" : ""}
               // bgColor={isCurrent === id ? "black" : ""}
               key={id}
@@ -74,8 +74,15 @@ const Products = ({ setStep }) => {
               <label htmlFor={id}>
                 {title} {price.amount} €
               </label> */}
-              {title} {price.amount} €
-            </ProductsList>
+              <ProductsList
+                // key={id}
+                // id={id}
+                // value={price.amount}
+                // onClick={(e) => handleSelect(e)}
+              >
+                {title} {price.amount} €
+              </ProductsList>
+            </li>
           ))}
         </ul>
         <button type='submit' disabled={!isDisabled}>
@@ -89,14 +96,14 @@ const Products = ({ setStep }) => {
 export default Products;
 
 // is stackOverflow
-// function YourComponent() {    
+// function YourComponent() {
 //   ...
 //   const [currentStyle, setCurrentStyle] = useState();
 //       ...
 //       array.map(val => (<ItemComponent style={currentStyle}>{val.name}</ItemComponent>)
 //   ...
 //   }
-  
+
 //   function ItemComponent({style, children}) {
 //      const [changeStyle, setChangeStyle] = useState(false)
 //      return (
