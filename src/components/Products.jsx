@@ -12,6 +12,11 @@ const Products = ({ setStep }) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isSelected, setIsSelected] = useState("blue");
   const [isCurrent, setIsCurrent] = useState(false);
+
+  const [currentStyle, setCurrentStyle] = useState();
+
+  const [clickedItems, setClickedItems] = useState([]);
+
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
   );
@@ -29,6 +34,8 @@ const Products = ({ setStep }) => {
       setSelectedProd(selectedProd.filter((val) => val !== e.target.id));
     }
   };
+
+  console.log(clickedItems)
 
   useEffect(() => {
     if (selectedProd.length) {
@@ -54,34 +61,21 @@ const Products = ({ setStep }) => {
       >
         <h3>Select product(s)</h3>
         <ul>
-          {products?.map(({ id, title, price }) => (
+          {products?.map(({ id, title, price }, index) => (
             <li
-              // color={isCurrent === id && isChecked ? "yellow" : ""}
-              // bgColor={isCurrent === id ? "black" : ""}
               key={id}
-              id={id}
-              value={price.amount}
-              onClick={(e) => handleSelect(e)}
-              // style={isSelected === currentItem ? currentStyle : newStyle}
+              onClick={() =>
+                setClickedItems(
+                  clickedItems.find((item) => item === index)
+                    ? clickedItems
+                    : [...clickedItems, index + 1]
+                )
+              }
+              style={
+                clickedItems.find((i) => i === index) ? currentStyle : null
+              }
             >
-              {/* <input
-                type='checkbox'
-                id={id}
-                value={price.amount}
-                name={id}
-                className='checkbox'
-              />
-              <label htmlFor={id}>
-                {title} {price.amount} €
-              </label> */}
-              <ProductsList
-                // key={id}
-                // id={id}
-                // value={price.amount}
-                // onClick={(e) => handleSelect(e)}
-              >
-                {title} {price.amount} €
-              </ProductsList>
+              {index}
             </li>
           ))}
         </ul>
@@ -95,18 +89,15 @@ const Products = ({ setStep }) => {
 
 export default Products;
 
-// is stackOverflow
-// function YourComponent() {
-//   ...
-//   const [currentStyle, setCurrentStyle] = useState();
-//       ...
-//       array.map(val => (<ItemComponent style={currentStyle}>{val.name}</ItemComponent>)
-//   ...
-//   }
+// const [currentStyle, setCurrentStyle] = useState();
+// const [clickedItems, setClickedItems] = useState([]);
 
-//   function ItemComponent({style, children}) {
-//      const [changeStyle, setChangeStyle] = useState(false)
-//      return (
-//          <li onClick={() => {setChangeStyle(true)}} style={changeStyle ? style : null}>{children}</li>
-//       )
-//   }
+// array.map((val, index) => (
+//     <li
+//       onClick={() =>
+//       setClickedItems(clickedItems.find(item => item===index) ? clickedItems : [...clickedItems, index])}
+//       style={clickedItems.find(i => i===index) ? currentStyle : null}
+//     >
+//       {val.name}
+//     </li>
+// )
