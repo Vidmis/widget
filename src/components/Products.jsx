@@ -21,21 +21,26 @@ const Products = ({ setStep }) => {
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
   );
 
-  const handleSelect = (e) => {
-    console.log("clicked", e.target);
-    if (e.targe) {
-      setIsCurrent(e.target.id);
-      dispatch(addPrice(Number(e.target.value)));
-      setSelectedProd([...selectedProd, e.target.id]);
-      console.log("Product selected");
-    } else if (selectedProd.some((val) => val === e.target.id)) {
-      console.log("Product UNselected");
-      dispatch(subtractPrice(Number(e.target.value)));
-      setSelectedProd(selectedProd.filter((val) => val !== e.target.id));
-    }
+  const handleSelect = (id, title, price) => {
+    console.log(price)
+    setClickedItems(
+      clickedItems.find((item) => item === title)
+        ? clickedItems.filter((val) => val !== title)
+        : [...clickedItems, title]
+    );
+    // if (e.target.checked) {
+    //   setIsCurrent(e.target.id);
+      dispatch(addPrice(Number(price)));
+    //   setSelectedProd([...selectedProd, e.target.id]);
+    //   console.log("Product selected");
+    // } else if (selectedProd.some((val) => val === e.target.id)) {
+    //   console.log("Product UNselected");
+    //   dispatch(subtractPrice(Number(e.target.value)));
+    //   setSelectedProd(selectedProd.filter((val) => val !== e.target.id));
+    // }
   };
 
-  console.log(clickedItems)
+  console.log("Clicked items: ", clickedItems);
 
   useEffect(() => {
     if (selectedProd.length) {
@@ -61,21 +66,18 @@ const Products = ({ setStep }) => {
       >
         <h3>Select product(s)</h3>
         <ul>
-          {products?.map(({ id, title, price }, index) => (
+          {products?.map(({ id, title, price }) => (
             <li
               key={id}
-              onClick={() =>
-                setClickedItems(
-                  clickedItems.find((item) => item === index)
-                    ? clickedItems
-                    : [...clickedItems, index + 1]
-                )
-              }
+              // value={price.amount}
+              onClick={() => handleSelect(id, title, price.amount)}
               style={
-                clickedItems.find((i) => i === index) ? currentStyle : null
+                clickedItems.filter((clicked) => clicked === title)
+                  ? currentStyle
+                  : null
               }
             >
-              {index}
+              {title} - {price.amount} €
             </li>
           ))}
         </ul>
@@ -88,16 +90,3 @@ const Products = ({ setStep }) => {
 };
 
 export default Products;
-
-// const [currentStyle, setCurrentStyle] = useState();
-// const [clickedItems, setClickedItems] = useState([]);
-
-// array.map((val, index) => (
-//     <li
-//       onClick={() =>
-//       setClickedItems(clickedItems.find(item => item===index) ? clickedItems : [...clickedItems, index])}
-//       style={clickedItems.find(i => i===index) ? currentStyle : null}
-//     >
-//       {val.name}
-//     </li>
-// )
