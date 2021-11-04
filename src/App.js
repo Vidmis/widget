@@ -3,8 +3,8 @@ import Products from "./components/Products.jsx";
 import ContactForm from "./components/ContactForm.jsx";
 import OrderReview from "./components/OrderReview.jsx";
 import Completed from "./components/Completed.jsx";
-import { GlobalStyle } from "./components/styles/GlobalStyle.style";
-import { AppWrapper, Title } from "./components/styles/AppWrapper.style.js";
+
+import styles from "./App.module.scss";
 
 const App = () => {
   const [step, setStep] = useState(1);
@@ -29,11 +29,10 @@ const App = () => {
 
   return (
     <>
-      <AppWrapper>
-        <GlobalStyle />
-        <Title>Shopping Widget</Title>
+      <div className={styles.app_wrapper}>
+        <h1>Shopping Widget</h1>
         {component}
-      </AppWrapper>
+      </div>
     </>
   );
 };
