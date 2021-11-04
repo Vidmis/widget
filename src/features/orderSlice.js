@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const resetState = null;
-
 const initialState = {
   products: [],
   contacts: {
@@ -43,8 +41,9 @@ export const orderSlice = createSlice({
     applyTaxes: (state, action) => {
       state.price.taxes = (action.payload * state.taxInfo?.rate) / 100;
     },
-    applyPrice: (state) => {
+    applyPrice: (state, action) => {
       state.price.grossTotal = state.price.netTotal + state.price.taxes;
+      state.price.currency = action.payload;
     },
   },
 });

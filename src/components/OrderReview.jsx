@@ -40,9 +40,10 @@ const OrderReview = ({ setStep }) => {
           })
         );
         dispatch(applyTaxes(order.price.netTotal));
-        dispatch(applyPrice());
+        dispatch(applyPrice(userIp?.currency_code));
       }
     });
+
   }, [taxes, userIp]);
 
   const handleComplete = () => {
