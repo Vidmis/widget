@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTaxes, applyPrice, applyTaxes } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
-import { CardStyle } from "./styles/Card.style";
+import Card from "./styles/CardUi/Card";
 
 
 const OrderReview = ({ setStep }) => {
@@ -51,7 +51,7 @@ const OrderReview = ({ setStep }) => {
   };
 
   return (
-    <CardStyle>
+    <Card>
       <div>
         <h3>Order Review</h3>
         <div className='products-cont'>
@@ -99,7 +99,7 @@ const OrderReview = ({ setStep }) => {
 
         <button onClick={handleComplete}>Next</button>
       </div>
-    </CardStyle>
+    </Card>
   );
 };
 

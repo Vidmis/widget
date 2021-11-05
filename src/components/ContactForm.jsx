@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
-import { CardStyle } from "./styles/Card.style";
+import Card from "./styles/CardUi/Card";
 
 const ContactForm = ({ setStep }) => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const ContactForm = ({ setStep }) => {
   };
 
   return (
-    <CardStyle>
+    <Card>
       <form onSubmit={handleSubmit} className='contact-card'>
         <h3>Contact details</h3>
         <div>
@@ -74,7 +74,7 @@ const ContactForm = ({ setStep }) => {
           Next
         </button>
       </form>
-    </CardStyle>
+    </Card>
   );
 };
 

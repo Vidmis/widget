@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addProduct, addPrice, subtractPrice } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch.js";
-import { CardStyle } from "./styles/Card.style.js";
-import { Form } from "./styles/Products.style";
+import Card from "./styles/CardUi/Card.js";
+import styles from "./Products.module.scss";
 
 const Products = ({ setStep }) => {
   const dispatch = useDispatch();
@@ -37,8 +37,9 @@ const Products = ({ setStep }) => {
   };
 
   return (
-    <CardStyle>
-      <Form
+    <Card>
+      <form
+        className={styles.form_content}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -63,10 +64,9 @@ const Products = ({ setStep }) => {
         <button type='submit' disabled={!isDisabled}>
           Next
         </button>
-      </Form>
-    </CardStyle>
+      </form>
+    </Card>
   );
 };
 
 export default Products;
- 
