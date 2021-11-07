@@ -1,6 +1,25 @@
-/*!*******************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/App.scss ***!
-  \*******************************************************************************************************/
+/*!****************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/styles/CardUi/Card.module.scss ***!
+  \****************************************************************************************************************************************/
+.ySBiVTEj8BnSd0OzzQy7 {
+  background-color: #54f;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  width: 16rem;
+  height: 22rem;
+  border-radius: 8px;
+}
+/*!******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/Products.module.scss ***!
+  \******************************************************************************************************************************/
+.rnT9aUYBVGGjN0sMsDZW {
+  display: grid;
+  grid-template-rows: 3rem 9rem 2rem;
+}
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/App.module.scss ***!
+  \**************************************************************************************************************/
 *,
 *,
 *::before,
@@ -22,19 +41,10 @@ body {
   margin-top: 2rem;
 }
 
-.app_name {
-  margin-bottom: 2rem;
-}
-/*!******************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/ui/Card.module.scss ***!
-  \******************************************************************************************************************/
-.h0jpPam1xdMkzUiPJrhl {
-  background-color: purple;
-}
-/*!******************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/Products.module.scss ***!
-  \******************************************************************************************************************************/
-._9sNU5GH1Oi2JJZIzHEQ {
+.pGoT2KOcCx33sMC88uOe {
   display: grid;
-  grid-template-rows: 3rem 9rem 2rem;
+  justify-items: center;
+}
+.pGoT2KOcCx33sMC88uOe h1 {
+  margin-bottom: 2rem;
 }
