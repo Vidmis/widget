@@ -5,7 +5,7 @@ export const Form = styled.form`
   grid-template-rows: 3rem 9rem 2rem;
 `;
 
-export const List = styled.li`
+export const Anchor = styled.a`
   color: ${(props) => props.color};
   background-color: ${props => props.bgColor}
 `;

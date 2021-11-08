@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { List } from "./styles/Products.style";
+import { Anchor } from "./styles/Products.style";
 
-const ProductsList = () => {
+const ProductsList = ({children}) => {
   const [isCurrent, setIsCurrent] = useState(false);
 
   return (
-    <List
+    <Anchor
       onClick={() => {
-        setIsCurrent(true);
+        isCurrent ? setIsCurrent(false) : setIsCurrent(true);
       }}
       color={isCurrent ? "yellow" : ""}
       bgColor={isCurrent ? "black" : ""}
     >
-      <p>Value</p>
-    </List>
+      {children}
+    </Anchor>
   );
 };
 

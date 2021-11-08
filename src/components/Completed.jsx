@@ -1,5 +1,5 @@
 import React from "react";
-import { CardStyle } from "./styles/Card.style.js";
+import Card from "./styles/CardUi/Card";
 
 const Completed = ({ setStep }) => {
   const handleClick = () => {
@@ -8,12 +8,12 @@ const Completed = ({ setStep }) => {
   };
 
   return (
-    <CardStyle>
+    <Card>
       <div>
         <h2>Order Completed!</h2>
         <button onClick={handleClick}>Select new product(s)</button>
       </div>
-    </CardStyle>
+    </Card>
   );
 };
 
