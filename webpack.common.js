@@ -1,20 +1,9 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  mode: "development",
   entry: path.join(__dirname, "src", "index.js"),
-  output: {
-    path: path.resolve(__dirname, "dist"),
-  },
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "/dist"),
-    },
-    historyApiFallback: true,
-    compress: true,
-    port: 3010,
-  },
   module: {
     rules: [
       {
@@ -43,5 +32,12 @@ module.exports = {
       },
     ],
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin({ filename: "main.css" }),
+    new HtmlWebpackPlugin({
+      title: "Widget",
+      template: './src/index.html',
+      filename: "index.html",
+    }),
+  ],
 };
