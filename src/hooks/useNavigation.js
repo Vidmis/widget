@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 
-const useNavigation = (current) => {
-  const [step, setStep] = useState(current);
+const useNavigation = () => {
+  const [step, setStep] = useState(1);
 
-//   const onClickNext = setStep((currentStep) => {
-//     const nextStep = currentStep + 1;
+  const onClickNext = (currentStep) => {
+    const nextStep = currentStep + 1;
+    if (nextStep < step) {
+      setStep(currentStep);
+    }
+    setStep(nextStep);
+  };
 
-//     if (nextStep > step) {
-//       return currentStep;
-//     }
-
-//     return nextStep;
-//   });
-//   return {step};
-    return {step}
-
+  return { onClickNext, step };
 };
 
 export default useNavigation;
