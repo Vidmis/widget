@@ -1,50 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct, addPrice, subtractPrice } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch.js";
 import Card from "./styles/CardUi/Card.js";
 import styles from "./Products.module.scss";
+import useNavigation from "../hooks/useNavigation.js";
 
-const Products = ({ setStep }) => {
+const Products = () => {
   const dispatch = useDispatch();
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [clickedItems, setClickedItems] = useState([]);
+  const { onNextStep } = useNavigation();
+  const order = useSelector((state) => state.order);
+
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
   );
 
-  const handleSelect = (id, price) => {
-    if (clickedItems.find((item) => item === id)) {
-      dispatch(subtractPrice(Number(price)));
-      setClickedItems(clickedItems.filter((item) => item !== id));
-    } else {
-      dispatch(addPrice(Number(price)));
-      setClickedItems([...clickedItems, id]);
-    }
+  const findProducts = (val) => {
+    return order.products.find((item) => item === val);
   };
 
-  useEffect(() => {
-    if (clickedItems.length) {
-      setIsDisabled(true);
-    } else if (!clickedItems.length) {
-      setIsDisabled(false);
+  const handleSelect = (id, price) => {
+    if (findProducts(id)) {
+      dispatch(subtractPrice(Number(price)));
+      dispatch(addProduct(order.products.filter((item) => item !== id)));
+    } else {
+      dispatch(addPrice(Number(price)));
+      dispatch(addProduct([...order.products, id]));
     }
-  }, [clickedItems]);
-
-  const handleSubmit = () => {
-    dispatch(addProduct(clickedItems));
-    setStep(2);
   };
 
   return (
     <Card>
-      <form
-        className={styles.form_content}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
+      <form className={styles.form_content} onSubmit={onNextStep}>
         <h3>Select product(s)</h3>
         <ul>
           {products?.map(({ id, title, price }) => (
@@ -52,7 +39,7 @@ const Products = ({ setStep }) => {
               key={id}
               onClick={() => handleSelect(id, price.amount)}
               style={
-                clickedItems.find((clicked) => clicked === id)
+                findProducts(id)
                   ? { background: "purple" }
                   : null
               }
@@ -61,9 +48,7 @@ const Products = ({ setStep }) => {
             </li>
           ))}
         </ul>
-        <button type='submit' disabled={!isDisabled}>
-          Next
-        </button>
+        <button type='submit'>Next</button>
       </form>
     </Card>
   );

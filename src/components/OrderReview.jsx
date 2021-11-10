@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTaxes, applyPrice, applyTaxes } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
+import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
-
-const OrderReview = ({ setStep }) => {
+const OrderReview = () => {
   const dispatch = useDispatch();
-  const order = useSelector((state) => state.order);
+  const { order } = useSelector((state) => state);
+  const { onNextStep, onPrevStep } = useNavigation();
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
   );
@@ -43,11 +44,10 @@ const OrderReview = ({ setStep }) => {
         dispatch(applyPrice(userIp?.currency_code));
       }
     });
-
   }, [taxes, userIp]);
 
   const handleComplete = () => {
-    fetchOrder().then(setStep(4));
+    fetchOrder().then(onNextStep());
   };
 
   return (
@@ -97,7 +97,12 @@ const OrderReview = ({ setStep }) => {
           </div>
         </div>
 
-        <button onClick={handleComplete}>Next</button>
+        <button type='button' onClick={onPrevStep}>
+          Back
+        </button>
+        <button type='button' onClick={handleComplete}>
+          Next
+        </button>
       </div>
     </Card>
   );

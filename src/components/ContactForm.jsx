@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
+import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
-const ContactForm = ({ setStep }) => {
+const ContactForm = () => {
   const dispatch = useDispatch();
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const { onNextStep, onPrevStep } = useNavigation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,15 +25,7 @@ const ContactForm = ({ setStep }) => {
           email: emailRef.current.value,
         })
       );
-      setStep(3);
-    }
-  };
-
-  const handleChange = (e) => {
-    if (e.target.value) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
+      onNextStep();
     }
   };
 
@@ -46,7 +39,6 @@ const ContactForm = ({ setStep }) => {
             placeholder='Enter user name'
             ref={firstNameRef}
             autoComplete='given-name'
-            onChange={(e) => handleChange(e)}
           />
         </div>
 
@@ -56,7 +48,6 @@ const ContactForm = ({ setStep }) => {
             placeholder='Enter last name'
             ref={lastNameRef}
             autoComplete='family-name'
-            onChange={(e) => handleChange(e)}
           />
         </div>
 
@@ -66,11 +57,13 @@ const ContactForm = ({ setStep }) => {
             placeholder='Enter email'
             ref={emailRef}
             autoComplete='email'
-            onChange={(e) => handleChange(e)}
           />
         </div>
 
-        <button disabled={!isDisabled} type='submit'>
+        <button type="button" onClick={onPrevStep}>
+          Back
+        </button>
+        <button type='submit'>
           Next
         </button>
       </form>

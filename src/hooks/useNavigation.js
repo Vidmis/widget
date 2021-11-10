@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { nextStep, prevStep, firstStep, chooseStep } from "../features/stepSlice";
 
 const useNavigation = () => {
-  const [step, setStep] = useState(1);
+  const dispatch = useDispatch();
 
-  const onClickNext = (currentStep) => {
-    const nextStep = currentStep + 1;
-    if (nextStep < step) {
-      setStep(currentStep);
-    }
-    setStep(nextStep);
+  const onNextStep = () => {
+    dispatch(nextStep());
   };
 
-  return { onClickNext, step };
+  const onPrevStep = () => {
+    dispatch(prevStep());
+  };
+
+  const selectStep = (stepIndex) => {
+    dispatch(chooseStep(stepIndex))
+  }
+
+  return { onNextStep, onPrevStep, selectStep };
 };
 
 export default useNavigation;

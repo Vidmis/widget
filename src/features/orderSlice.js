@@ -45,6 +45,7 @@ export const orderSlice = createSlice({
       state.price.grossTotal = state.price.netTotal + state.price.taxes;
       state.price.currency = action.payload;
     },
+    resetValues: () => initialState,
   },
 });
 
@@ -56,5 +57,6 @@ export const {
   addTaxes,
   applyTaxes,
   applyPrice,
+  resetValues,
 } = orderSlice.actions;
 export default orderSlice.reducer;
