@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js --open",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test": "jest"
   },
@@ -40,6 +40,7 @@
     "styled-components": "^5.3.3",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
+    "typescript-plugin-css-modules": "^3.4.0",
     "webpack": "^5.60.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1",
