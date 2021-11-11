@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addTaxes, applyPrice, applyTaxes } from "../features/orderSlice";
+import {
+  addTaxes,
+  applyPrice,
+  applyTaxes,
+  addNetTotal,
+} from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
 const OrderReview = () => {
+  const [netTotal, setNetTotal] = useState(0);
   const dispatch = useAppDispatch();
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
@@ -29,7 +35,19 @@ const OrderReview = () => {
       .then((res) => res.json())
       .then((postOrder) => console.log(postOrder));
 
+  const productsPrice = () => {
+    const sumPrice = products
+      ?.filter((prod) => order?.products.includes(prod.id))
+      .map((prod) => prod.price.amount);
+
+    const reducer = (previousValue, currentValue) =>
+      previousValue + currentValue;
+
+    setNetTotal(sumPrice?.reduce(reducer));
+  };
+
   useEffect(() => {
+    productsPrice();
     taxes?.filter((taxRate) => {
       if (
         taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
@@ -40,11 +58,12 @@ const OrderReview = () => {
             rate: taxRate.rate,
           })
         );
-        dispatch(applyTaxes(order.price.netTotal));
+        dispatch(addNetTotal(netTotal));
+        dispatch(applyTaxes(netTotal));
         dispatch(applyPrice(userIp?.currency_code));
       }
     });
-  }, [taxes, userIp]);
+  }, [userIp]);
 
   const handleComplete = () => {
     fetchOrder(order).then(onNextStep);
@@ -58,7 +77,7 @@ const OrderReview = () => {
           <h4>Products</h4>
           <ul>
             {products
-              ?.filter((prod) => order.products.includes(prod.id))
+              ?.filter((prod) => order?.products.includes(prod.id))
               .map(({ id, title, price }) => (
                 <li key={id}>
                   {title} {price.amount} €
@@ -72,7 +91,7 @@ const OrderReview = () => {
           <div>
             <label htmlFor='name'>Name </label>
             <span id='name'>
-              {order.contacts.firstName} {order.contacts.lastName}
+              {order?.contacts.firstName} {order?.contacts.lastName}
             </span>
           </div>
         </div>
@@ -81,11 +100,11 @@ const OrderReview = () => {
           <h4>Price</h4>
           <div>
             <label htmlFor='products'>Products </label>
-            <span id='products'>{order.price.netTotal.toFixed(2)} €</span>
+            <span id='products'>{netTotal?.toFixed(2)} €</span>
           </div>
           <div>
             <label htmlFor='taxes'>Taxes </label>
-            <span id='taxes'>{order.price.taxes.toFixed(2)} €</span>
+            <span id='taxes'>{order?.price.taxes.toFixed(2)} €</span>
           </div>
         </div>
 
@@ -93,7 +112,7 @@ const OrderReview = () => {
           <h4>Total</h4>
           <div>
             <label htmlFor='total'>Taxes </label>
-            <span id='total'>{order.price.grossTotal.toFixed(2)} €</span>
+            <span id='total'>{order?.price.grossTotal.toFixed(2)} €</span>
           </div>
         </div>
 

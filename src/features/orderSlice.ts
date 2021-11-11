@@ -54,11 +54,8 @@ export const orderSlice = createSlice({
     addContacts(state, action: PayloadAction<Contacts>) {
       state.contacts = action.payload;
     },
-    addPrice(state, action: PayloadAction<number>) {
-      state.price.netTotal += action.payload;
-    },
-    subtractPrice(state, action: PayloadAction<number>) {
-      state.price.netTotal -= action.payload;
+    addNetTotal(state, action: PayloadAction<number>) {
+      state.price.netTotal = action.payload;
     },
     addTaxes(state, action: PayloadAction<TaxInfo>) {
       state.taxInfo = action.payload;
@@ -77,11 +74,10 @@ export const orderSlice = createSlice({
 export const {
   addProduct,
   addContacts,
-  addPrice,
-  subtractPrice,
   addTaxes,
   applyTaxes,
   applyPrice,
   resetValues,
+  addNetTotal,
 } = orderSlice.actions;
 export default orderSlice.reducer;

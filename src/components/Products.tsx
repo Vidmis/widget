@@ -1,7 +1,7 @@
 import React from "react";
-import { addProduct, addPrice, subtractPrice } from "../features/orderSlice";
+import { addProduct } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
-import Card from "./styles/CardUi/Card";
+import Card from "./styles/CardUi/Card.js";
 import styles from "./Products.module.scss";
 import useNavigation from "../hooks/useNavigation";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -19,12 +19,10 @@ const Products = () => {
     return order.products.find((item) => item === val);
   };
 
-  const handleSelect = (id: string, price: number) => {
+  const handleSelect = (id: string) => {
     if (findProducts(id)) {
-      dispatch(subtractPrice(Number(price)));
       dispatch(addProduct(order.products.filter((item) => item !== id)));
     } else {
-      dispatch(addPrice(Number(price)));
       dispatch(addProduct([...order.products, id]));
     }
   };
@@ -37,7 +35,7 @@ const Products = () => {
           {products?.map(({ id, title, price }) => (
             <li
               key={id}
-              onClick={() => handleSelect(id, price.amount)}
+              onClick={() => handleSelect(id)}
               style={
                 findProducts(id)
                   ? { background: "purple" }
