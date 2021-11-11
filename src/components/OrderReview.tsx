@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addTaxes,
@@ -11,7 +11,7 @@ import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
 const OrderReview = () => {
-  const [netTotal, setNetTotal] = useState(0);
+  const reducer = (previousValue, currentValue) => previousValue + currentValue;
   const dispatch = useAppDispatch();
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
@@ -39,15 +39,14 @@ const OrderReview = () => {
     const sumPrice = products
       ?.filter((prod) => order?.products.includes(prod.id))
       .map((prod) => prod.price.amount);
-
-    const reducer = (previousValue, currentValue) =>
-      previousValue + currentValue;
-
-    setNetTotal(sumPrice?.reduce(reducer));
+    if (sumPrice?.length > 0) {
+      console.log(sumPrice);
+      return sumPrice?.reduce(reducer);
+    }
   };
 
   useEffect(() => {
-    productsPrice();
+    // const total = productsPrice();
     taxes?.filter((taxRate) => {
       if (
         taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
@@ -58,9 +57,9 @@ const OrderReview = () => {
             rate: taxRate.rate,
           })
         );
-        dispatch(addNetTotal(netTotal));
-        dispatch(applyTaxes(netTotal));
-        dispatch(applyPrice(userIp?.currency_code));
+        dispatch(addNetTotal(productsPrice())); // When you back to products and come again 
+        dispatch(applyTaxes(productsPrice())); // to order review, userIp is already here and 
+        dispatch(applyPrice(userIp?.currency_code)); // useEffect not runs again, so, redux is not updated
       }
     });
   }, [userIp]);
@@ -100,7 +99,7 @@ const OrderReview = () => {
           <h4>Price</h4>
           <div>
             <label htmlFor='products'>Products </label>
-            <span id='products'>{netTotal?.toFixed(2)} €</span>
+            <span id='products'>{productsPrice()?.toFixed(2)} €</span>
           </div>
           <div>
             <label htmlFor='taxes'>Taxes </label>

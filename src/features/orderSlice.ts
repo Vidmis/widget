@@ -62,9 +62,9 @@ export const orderSlice = createSlice({
     },
     applyTaxes(state, action: PayloadAction<number>) {
       state.price.taxes = (action.payload * state.taxInfo?.rate) / 100;
+      state.price.grossTotal = action.payload + state.price.taxes;
     },
     applyPrice(state, action: PayloadAction<string>) {
-      state.price.grossTotal = state.price.netTotal + state.price.taxes;
       state.price.currency = action.payload;
     },
     resetValues: () => initialState,
