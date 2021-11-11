@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js --open",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "test": "jest"
   },
@@ -22,8 +22,11 @@
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.16.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.0",
     "file-loader": "^6.2.0",

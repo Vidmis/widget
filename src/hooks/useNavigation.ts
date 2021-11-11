@@ -1,8 +1,8 @@
-import { useDispatch } from "react-redux";
-import { nextStep, prevStep, firstStep, chooseStep } from "../features/stepSlice";
+import { useAppDispatch } from './../app/hooks';
+import { nextStep, prevStep, chooseStep } from "../features/stepSlice";
 
 const useNavigation = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onNextStep = () => {
     dispatch(nextStep());
@@ -12,7 +12,7 @@ const useNavigation = () => {
     dispatch(prevStep());
   };
 
-  const selectStep = (stepIndex) => {
+  const selectStep = (stepIndex: number) => {
     dispatch(chooseStep(stepIndex))
   }
 

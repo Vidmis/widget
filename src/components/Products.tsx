@@ -1,25 +1,25 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { addProduct, addPrice, subtractPrice } from "../features/orderSlice";
-import useFetch from "../hooks/useFetch.js";
-import Card from "./styles/CardUi/Card.js";
+import useFetch from "../hooks/useFetch";
+import Card from "./styles/CardUi/Card";
 import styles from "./Products.module.scss";
-import useNavigation from "../hooks/useNavigation.js";
+import useNavigation from "../hooks/useNavigation";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
 const Products = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { onNextStep } = useNavigation();
-  const order = useSelector((state) => state.order);
+  const order = useAppSelector((state) => state.order);
 
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
   );
 
-  const findProducts = (val) => {
+  const findProducts = (val: string) => {
     return order.products.find((item) => item === val);
   };
 
-  const handleSelect = (id, price) => {
+  const handleSelect = (id: string, price: number) => {
     if (findProducts(id)) {
       dispatch(subtractPrice(Number(price)));
       dispatch(addProduct(order.products.filter((item) => item !== id)));

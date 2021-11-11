@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addTaxes, applyPrice, applyTaxes } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
 const OrderReview = () => {
-  const dispatch = useDispatch();
-  const { order } = useSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
@@ -17,7 +17,7 @@ const OrderReview = () => {
     "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
   );
 
-  const fetchOrder = (orderPayload) =>
+  const fetchOrder = (orderPayload: Object) =>
     fetch("https://run.mocky.io/v3/240a6dfa-24d9-41b7-b224-ae870ddfbc95", {
       method: "POST",
       headers: {
@@ -47,7 +47,7 @@ const OrderReview = () => {
   }, [taxes, userIp]);
 
   const handleComplete = () => {
-    fetchOrder().then(onNextStep());
+    fetchOrder(order).then(onNextStep);
   };
 
   return (

@@ -1,16 +1,16 @@
 import React from "react";
-import Products from "./components/Products.jsx";
-import ContactForm from "./components/ContactForm.jsx";
-import OrderReview from "./components/OrderReview.jsx";
-import Completed from "./components/Completed.jsx";
+import Products from "./components/Products";
+import ContactForm from "./components/ContactForm";
+import OrderReview from "./components/OrderReview";
+import Completed from "./components/Completed";
 import styles from "./App.module.scss";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "./app/hooks";
 
 const App = () => {
-  const { step } = useSelector((state) => state);
+  const step = useAppSelector((state) => state.step.value);
 
   const onClickNext = () => {
-    switch (step.value) {
+    switch (step) {
       case 0:
         return <Products />;
       case 1:
