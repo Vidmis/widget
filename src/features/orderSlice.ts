@@ -1,6 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface Contacts {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface Price {
+  netTotal: number;
+  taxes: number;
+  grossTotal: number;
+  currency: string;
+}
+
+interface TaxInfo {
+  countryCode: string;
+  rate: number;
+}
+
+interface StepState {
+  products: Array<string>;
+  contacts: Contacts;
+  price: Price;
+  taxInfo: TaxInfo;
+}
+
+const initialState: StepState = {
   products: [],
   contacts: {
     firstName: "",
@@ -23,25 +48,25 @@ export const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
+    addProduct(state, action: PayloadAction<Array<string>>) {
       state.products = action.payload;
     },
-    addContacts: (state, action) => {
+    addContacts(state, action: PayloadAction<Contacts>) {
       state.contacts = action.payload;
     },
-    addPrice: (state, action) => {
+    addPrice(state, action: PayloadAction<number>) {
       state.price.netTotal += action.payload;
     },
-    subtractPrice: (state, action) => {
+    subtractPrice(state, action: PayloadAction<number>) {
       state.price.netTotal -= action.payload;
     },
-    addTaxes: (state, action) => {
+    addTaxes(state, action: PayloadAction<TaxInfo>) {
       state.taxInfo = action.payload;
     },
-    applyTaxes: (state, action) => {
+    applyTaxes(state, action: PayloadAction<number>) {
       state.price.taxes = (action.payload * state.taxInfo?.rate) / 100;
     },
-    applyPrice: (state, action) => {
+    applyPrice(state, action: PayloadAction<string>) {
       state.price.grossTotal = state.price.netTotal + state.price.taxes;
       state.price.currency = action.payload;
     },

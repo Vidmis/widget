@@ -1,8 +1,8 @@
 import React from "react";
-import Products from "./components/Products.jsx";
-import ContactForm from "./components/ContactForm.jsx";
-import OrderReview from "./components/OrderReview.jsx";
-import Completed from "./components/Completed.jsx";
+import Products from "./components/Products";
+import ContactForm from "./components/ContactForm";
+import OrderReview from "./components/OrderReview";
+import Completed from "./components/Completed";
 import styles from "./App.module.scss";
 import { useAppSelector } from "./app/hooks";
 
