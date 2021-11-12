@@ -44,11 +44,9 @@ const OrderReview = () => {
     }
   };
 
-  
-  
   useEffect(() => {
     const total: number = productsPrice();
-    
+
     taxes?.filter((taxRate) => {
       if (
         taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
