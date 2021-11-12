@@ -40,13 +40,15 @@ const OrderReview = () => {
       ?.filter((prod) => order?.products.includes(prod.id))
       .map((prod) => prod.price.amount);
     if (sumPrice?.length > 0) {
-      console.log(sumPrice);
       return sumPrice?.reduce(reducer);
     }
   };
 
+  
+  
   useEffect(() => {
-    // const total = productsPrice();
+    const total: number = productsPrice();
+    
     taxes?.filter((taxRate) => {
       if (
         taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
@@ -57,12 +59,12 @@ const OrderReview = () => {
             rate: taxRate.rate,
           })
         );
-        dispatch(addNetTotal(productsPrice())); // When you back to products and come again 
-        dispatch(applyTaxes(productsPrice())); // to order review, userIp is already here and 
-        dispatch(applyPrice(userIp?.currency_code)); // useEffect not runs again, so, redux is not updated
+        dispatch(addNetTotal(total));
+        dispatch(applyTaxes(total));
+        dispatch(applyPrice(userIp?.currency_code));
       }
     });
-  }, [userIp]);
+  }, [userIp, taxes]);
 
   const handleComplete = () => {
     fetchOrder(order).then(onNextStep);
