@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addTaxes,
@@ -23,6 +23,13 @@ const OrderReview = () => {
     "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
   );
 
+  interface Price {
+    netTotal: number;
+    taxes: number;
+    grossTotal: number;
+    currency: string;
+  }
+
   const fetchOrder = (orderPayload: Object) =>
     fetch("https://run.mocky.io/v3/240a6dfa-24d9-41b7-b224-ae870ddfbc95", {
       method: "POST",
@@ -45,26 +52,47 @@ const OrderReview = () => {
   };
 
   useEffect(() => {
-    const total: number = productsPrice();
-
-    taxes?.filter((taxRate) => {
+    // calculate all taxes in component
+    taxes?.find((taxRate) => {
       if (
-        taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
+        taxRate.countryCode
+          .toLowerCase()
+          .includes(userIp?.country_code.toLowerCase())
       ) {
         dispatch(
+          // Adds country tax rate (21%) and countryCode (LT i.e.) to taxInfo obj
           addTaxes({
             countryCode: taxRate.countryCode.toUpperCase(),
             rate: taxRate.rate,
           })
         );
-        dispatch(addNetTotal(total));
-        dispatch(applyTaxes(total));
-        dispatch(applyPrice(userIp?.currency_code));
       }
     });
   }, [userIp, taxes]);
 
-  const handleComplete = () => {
+  console.log("taxes ", taxes);
+  console.log("userIp ", userIp);
+
+  const price: Price = {
+    netTotal: productsPrice(),
+    taxes: (action.productsPrice() * state.taxInfo?.rate) / 100,
+    grossTotal: 0,
+    currency: "",
+  };
+
+  const calcPrice = (val: Price) => {
+     val.netTotal = productsPrice()
+  }  
+
+  console.log(price)
+
+
+  const handleClick = () => {
+    const total: number = productsPrice();
+
+    dispatch(addNetTotal(total)); // Adds only net total to Price obj
+    dispatch(applyTaxes(total)); // Calculates tax percentage and price with taxes included (To price obj)
+    dispatch(applyPrice(userIp?.currency_code)); // Adds currency to Price obj
     fetchOrder(order).then(onNextStep);
   };
 
@@ -118,7 +146,7 @@ const OrderReview = () => {
         <button type='button' onClick={onPrevStep}>
           Back
         </button>
-        <button type='button' onClick={handleComplete}>
+        <button type='button' onClick={handleClick}>
           Next
         </button>
       </div>
