@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import {
-  addTaxes,
-  applyPrice,
-  applyTaxes,
-  addNetTotal,
-} from "../features/orderSlice";
+import { addPrice, addTaxes } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
@@ -13,6 +8,7 @@ import Card from "./styles/CardUi/Card";
 const OrderReview = () => {
   const reducer = (previousValue, currentValue) => previousValue + currentValue;
   const dispatch = useAppDispatch();
+  const [taxInfo, setTaxInfo] = useState<ITax>({ countryCode: "", rate: 0 });
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
   const { data: products } = useFetch(
@@ -23,24 +19,17 @@ const OrderReview = () => {
     "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
   );
 
-  interface Price {
+  interface PriceSummary {
     netTotal: number;
     taxes: number;
     grossTotal: number;
     currency: string;
   }
 
-  const fetchOrder = (orderPayload: Object) =>
-    fetch("https://run.mocky.io/v3/240a6dfa-24d9-41b7-b224-ae870ddfbc95", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderPayload),
-    })
-      .then((res) => res.json())
-      .then((postOrder) => console.log(postOrder));
+  interface ITax {
+    countryCode: string;
+    rate: number;
+  }
 
   const productsPrice = () => {
     const sumPrice = products
@@ -51,49 +40,33 @@ const OrderReview = () => {
     }
   };
 
+  const total: number = productsPrice();
+  const priceSummary: PriceSummary = {
+    netTotal: total,
+    taxes: (total * taxInfo?.rate) / 100,
+    grossTotal: total + (total * taxInfo?.rate) / 100,
+    currency: userIp?.currency_code,
+  };
+
   useEffect(() => {
-    // calculate all taxes in component
     taxes?.find((taxRate) => {
       if (
         taxRate.countryCode
           .toLowerCase()
           .includes(userIp?.country_code.toLowerCase())
       ) {
-        dispatch(
-          // Adds country tax rate (21%) and countryCode (LT i.e.) to taxInfo obj
-          addTaxes({
-            countryCode: taxRate.countryCode.toUpperCase(),
-            rate: taxRate.rate,
-          })
-        );
+        setTaxInfo({
+          countryCode: taxRate.countryCode.toUpperCase(),
+          rate: taxRate.rate,
+        });
       }
     });
   }, [userIp, taxes]);
 
-  console.log("taxes ", taxes);
-  console.log("userIp ", userIp);
-
-  const price: Price = {
-    netTotal: productsPrice(),
-    taxes: (action.productsPrice() * state.taxInfo?.rate) / 100,
-    grossTotal: 0,
-    currency: "",
-  };
-
-  const calcPrice = (val: Price) => {
-     val.netTotal = productsPrice()
-  }  
-
-  console.log(price)
-
-
   const handleClick = () => {
-    const total: number = productsPrice();
-
-    dispatch(addNetTotal(total)); // Adds only net total to Price obj
-    dispatch(applyTaxes(total)); // Calculates tax percentage and price with taxes included (To price obj)
-    dispatch(applyPrice(userIp?.currency_code)); // Adds currency to Price obj
-    fetchOrder(order).then(onNextStep);
+    dispatch(addTaxes(taxInfo));
+    dispatch(addPrice(priceSummary));
+    onNextStep();
   };
 
   return (
@@ -127,11 +100,11 @@ const OrderReview = () => {
           <h4>Price</h4>
           <div>
             <label htmlFor='products'>Products </label>
-            <span id='products'>{productsPrice()?.toFixed(2)} €</span>
+            <span id='products'>{priceSummary.netTotal?.toFixed(2)} €</span>
           </div>
           <div>
             <label htmlFor='taxes'>Taxes </label>
-            <span id='taxes'>{order?.price.taxes.toFixed(2)} €</span>
+            <span id='taxes'>{priceSummary.taxes.toFixed(2)} €</span>
           </div>
         </div>
 
@@ -139,7 +112,7 @@ const OrderReview = () => {
           <h4>Total</h4>
           <div>
             <label htmlFor='total'>Taxes </label>
-            <span id='total'>{order?.price.grossTotal.toFixed(2)} €</span>
+            <span id='total'>{priceSummary.grossTotal.toFixed(2)} €</span>
           </div>
         </div>
 
