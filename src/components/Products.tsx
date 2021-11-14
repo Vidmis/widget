@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { addProduct } from "../features/orderSlice";
-import useFetch from "../hooks/useFetch";
 import Card from "./styles/CardUi/Card.js";
 import styles from "./Products.module.scss";
 import useNavigation from "../hooks/useNavigation";
@@ -10,24 +9,15 @@ import httpService from "../httpService/httpService";
 const Products = () => {
   const dispatch = useAppDispatch();
   const [selectedProd, setSelectedProd] = useState<Array<string>>([]);
-  const { onNextStep, selectStep } = useNavigation();
-  const { makeGet, makeGetOutput } = httpService();
-  makeGet(
-    "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-  );
-
-  console.log()
-
-  const { data: products } = useFetch(
-    "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-  );
+  const [products, setProducts] = useState(null);
+  const { makeGet } = httpService();
+  const { onNextStep } = useNavigation();
 
   useEffect(() => {
-    console.log(makeGet(
+    makeGet(
       "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-    ))
-  }, [products]);
-
+    ).then((res) => setProducts(res));
+  }, []);
 
   const handleSelect = (id: string) => {
     if (selectedProd.includes(id)) {

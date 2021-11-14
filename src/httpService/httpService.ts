@@ -1,24 +1,19 @@
 import axios from "axios";
 
 const httpService = () => {
-  const makeGetOutput = (res) => {
-    return res;
-  };
-
-  const makeGet = (url) => {
+  const makeGet = (url) =>
     axios
       .get(url)
-      .then((res) => makeGetOutput(res.data))
-      .catch((err) => console.log(err));
-  };
-  const makePost = (url, data) => {
+      .then((res) => res.data)
+      .catch((err) => err);
+
+  const makePost = (url, data) =>
     axios
       .post(url, data)
       .then((res) => res)
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => err);
 
-  return { makeGet, makePost, makeGetOutput };
+  return { makeGet, makePost };
 };
 
 export default httpService;
