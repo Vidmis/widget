@@ -5,6 +5,18 @@ import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
+interface PriceSummary {
+  netTotal: number;
+  taxes: number;
+  grossTotal: number;
+  currency: string;
+}
+
+interface ITax {
+  countryCode: string;
+  rate: number;
+}
+
 const OrderReview = () => {
   const reducer = (previousValue, currentValue) => previousValue + currentValue;
   const dispatch = useAppDispatch();
@@ -18,18 +30,6 @@ const OrderReview = () => {
   const { data: taxes } = useFetch(
     "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
   );
-
-  interface PriceSummary {
-    netTotal: number;
-    taxes: number;
-    grossTotal: number;
-    currency: string;
-  }
-
-  interface ITax {
-    countryCode: string;
-    rate: number;
-  }
 
   const productsPrice = () => {
     const sumPrice = products
