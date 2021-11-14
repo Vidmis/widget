@@ -1,12 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addTaxes, applyPrice, applyTaxes } from "../features/orderSlice";
+import { addPrice, addTaxes } from "../features/orderSlice";
 import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
+interface PriceSummary {
+  netTotal: number;
+  taxes: number;
+  grossTotal: number;
+  currency: string;
+}
+
+interface ITax {
+  countryCode: string;
+  rate: number;
+}
+
 const OrderReview = () => {
+  const reducer = (previousValue, currentValue) => previousValue + currentValue;
   const dispatch = useAppDispatch();
+  const [taxInfo, setTaxInfo] = useState<ITax>({ countryCode: "", rate: 0 });
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
   const { data: products } = useFetch(
@@ -17,37 +31,42 @@ const OrderReview = () => {
     "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
   );
 
-  const fetchOrder = (orderPayload: Object) =>
-    fetch("https://run.mocky.io/v3/240a6dfa-24d9-41b7-b224-ae870ddfbc95", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderPayload),
-    })
-      .then((res) => res.json())
-      .then((postOrder) => console.log(postOrder));
+  const productsPrice = () => {
+    const sumPrice = products
+      ?.filter((prod) => order?.products.includes(prod.id))
+      .map((prod) => prod.price.amount);
+    if (sumPrice?.length > 0) {
+      return sumPrice?.reduce(reducer);
+    }
+  };
+
+  const total: number = productsPrice();
+  const priceSummary: PriceSummary = {
+    netTotal: total,
+    taxes: (total * taxInfo?.rate) / 100,
+    grossTotal: total + (total * taxInfo?.rate) / 100,
+    currency: userIp?.currency_code,
+  };
 
   useEffect(() => {
-    taxes?.filter((taxRate) => {
+    taxes?.find((taxRate) => {
       if (
-        taxRate.countryCode.toLowerCase() === userIp?.country_code.toLowerCase()
+        taxRate.countryCode
+          .toLowerCase()
+          .includes(userIp?.country_code.toLowerCase())
       ) {
-        dispatch(
-          addTaxes({
-            countryCode: taxRate.countryCode.toUpperCase(),
-            rate: taxRate.rate,
-          })
-        );
-        dispatch(applyTaxes(order.price.netTotal));
-        dispatch(applyPrice(userIp?.currency_code));
+        setTaxInfo({
+          countryCode: taxRate.countryCode.toUpperCase(),
+          rate: taxRate.rate,
+        });
       }
     });
-  }, [taxes, userIp]);
+  }, [userIp, taxes]);
 
-  const handleComplete = () => {
-    fetchOrder(order).then(onNextStep);
+  const handleClick = () => {
+    dispatch(addTaxes(taxInfo));
+    dispatch(addPrice(priceSummary));
+    onNextStep();
   };
 
   return (
@@ -58,7 +77,7 @@ const OrderReview = () => {
           <h4>Products</h4>
           <ul>
             {products
-              ?.filter((prod) => order.products.includes(prod.id))
+              ?.filter((prod) => order?.products.includes(prod.id))
               .map(({ id, title, price }) => (
                 <li key={id}>
                   {title} {price.amount} €
@@ -72,7 +91,7 @@ const OrderReview = () => {
           <div>
             <label htmlFor='name'>Name </label>
             <span id='name'>
-              {order.contacts.firstName} {order.contacts.lastName}
+              {order?.contacts.firstName} {order?.contacts.lastName}
             </span>
           </div>
         </div>
@@ -81,11 +100,11 @@ const OrderReview = () => {
           <h4>Price</h4>
           <div>
             <label htmlFor='products'>Products </label>
-            <span id='products'>{order.price.netTotal.toFixed(2)} €</span>
+            <span id='products'>{priceSummary.netTotal?.toFixed(2)} €</span>
           </div>
           <div>
             <label htmlFor='taxes'>Taxes </label>
-            <span id='taxes'>{order.price.taxes.toFixed(2)} €</span>
+            <span id='taxes'>{priceSummary.taxes.toFixed(2)} €</span>
           </div>
         </div>
 
@@ -93,14 +112,14 @@ const OrderReview = () => {
           <h4>Total</h4>
           <div>
             <label htmlFor='total'>Taxes </label>
-            <span id='total'>{order.price.grossTotal.toFixed(2)} €</span>
+            <span id='total'>{priceSummary.grossTotal.toFixed(2)} €</span>
           </div>
         </div>
 
         <button type='button' onClick={onPrevStep}>
           Back
         </button>
-        <button type='button' onClick={handleComplete}>
+        <button type='button' onClick={handleClick}>
           Next
         </button>
       </div>
