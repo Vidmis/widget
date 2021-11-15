@@ -1,30 +1,41 @@
-import React, { useRef } from "react";
+import React, { useReducer } from "react";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
+interface Contacts {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const firstNameRef = useRef(null);
-  const lastNameRef = useRef(null);
-  const emailRef = useRef(null);
   const { onNextStep, onPrevStep } = useNavigation();
+
+  const initialValues: Contacts = {
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
+
+  const [formValues, setFormValues] = useReducer(
+    (curVals, newVals) => ({ ...curVals, ...newVals }),
+    initialValues
+  );
+
+  const { firstName, lastName, email } = formValues;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      firstNameRef.current.value !== "" &&
-      lastNameRef.current.value !== "" &&
-      emailRef.current.value !== ""
-    ) {
-      dispatch(
-        addContacts({
-          firstName: firstNameRef.current.value,
-          lastName: lastNameRef.current.value,
-          email: emailRef.current.value,
-        })
-      );
+    if (firstName !== "" && lastName !== "" && email !== "") {
+      dispatch(addContacts(formValues));
       onNextStep();
     }
   };
@@ -37,8 +48,10 @@ const ContactForm = () => {
           <input
             type='text'
             placeholder='Enter user name'
-            ref={firstNameRef}
+            name='firstName'
+            value={firstName}
             autoComplete='given-name'
+            onChange={handleChange}
           />
         </div>
 
@@ -46,8 +59,10 @@ const ContactForm = () => {
           <input
             type='text'
             placeholder='Enter last name'
-            ref={lastNameRef}
+            name='lastName'
+            value={lastName}
             autoComplete='family-name'
+            onChange={handleChange}
           />
         </div>
 
@@ -55,17 +70,17 @@ const ContactForm = () => {
           <input
             type='email'
             placeholder='Enter email'
-            ref={emailRef}
+            name='email'
+            value={email}
             autoComplete='email'
+            onChange={handleChange}
           />
         </div>
 
-        <button type="button" onClick={onPrevStep}>
+        <button type='button' onClick={onPrevStep}>
           Back
         </button>
-        <button type='submit'>
-          Next
-        </button>
+        <button type='submit'>Next</button>
       </form>
     </Card>
   );

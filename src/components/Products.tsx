@@ -9,7 +9,7 @@ import { useAppDispatch } from "../app/hooks";
 const Products = () => {
   const dispatch = useAppDispatch();
   const [selectedProd, setSelectedProd] = useState<Array<string>>([]);
-  const { onNextStep, selectStep } = useNavigation();
+  const { onNextStep } = useNavigation();
 
   const { data: products } = useFetch(
     "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
