@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addPrice, addTaxes } from "../features/orderSlice";
-import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
+import httpService from "../httpService/httpService";
 import Card from "./styles/CardUi/Card";
 
 interface PriceSummary {
@@ -23,13 +23,25 @@ const OrderReview = () => {
   const [taxInfo, setTaxInfo] = useState<ITax>({ countryCode: "", rate: 0 });
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
-  const { data: products } = useFetch(
-    "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-  );
-  const { data: userIp } = useFetch("http://ipwhois.app/json/");
-  const { data: taxes } = useFetch(
-    "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
-  );
+
+  const [products, setProducts] = useState(null);
+  const [userIp, setUserIp] = useState(null);
+  const [taxes, setTaxes] = useState(null);
+
+  useEffect(() => {
+    httpService
+      .get("https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.log(err));
+    httpService
+      .get("http://ipwhois.app/json/")
+      .then((res) => setUserIp(res.data))
+      .catch((err) => console.log(err));
+    httpService
+      .get("https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8")
+      .then((res) => setTaxes(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const productsPrice = () => {
     const sumPrice = products
@@ -38,14 +50,6 @@ const OrderReview = () => {
     if (sumPrice?.length > 0) {
       return sumPrice?.reduce(reducer);
     }
-  };
-
-  const total: number = productsPrice();
-  const priceSummary: PriceSummary = {
-    netTotal: total,
-    taxes: (total * taxInfo?.rate) / 100,
-    grossTotal: total + (total * taxInfo?.rate) / 100,
-    currency: userIp?.currency_code,
   };
 
   useEffect(() => {
@@ -62,6 +66,14 @@ const OrderReview = () => {
       }
     });
   }, [userIp, taxes]);
+
+  const total: number = productsPrice();
+  const priceSummary: PriceSummary = {
+    netTotal: total,
+    taxes: (total * taxInfo?.rate) / 100,
+    grossTotal: total + (total * taxInfo?.rate) / 100,
+    currency: userIp?.currency_code,
+  };
 
   const handleClick = () => {
     dispatch(addTaxes(taxInfo));
