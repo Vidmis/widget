@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addPrice, addTaxes } from "../features/orderSlice";
-import useFetch from "../hooks/useFetch";
 import useNavigation from "../hooks/useNavigation";
 import httpService from "../httpService/httpService";
 import Card from "./styles/CardUi/Card";
