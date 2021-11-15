@@ -1,16 +1,38 @@
-import React, { useRef } from "react";
+import React, { useReducer, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
 import Card from "./styles/CardUi/Card";
 
+const reducer = (state, action) => {
+  switch(action.type) {
+    case "HANDLE_INPUT": 
+        return {
+            ...state,
+            [action.field]: action.payload,
+        };
+    default:
+        return state;
+}
+}
+
+
+
 const ContactForm = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
+  const initialFormState = {
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
+  const [state, dispatch] = useReducer(reducer, initialFormState);
   const { onNextStep, onPrevStep } = useNavigation();
+  
 
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -60,12 +82,10 @@ const ContactForm = () => {
           />
         </div>
 
-        <button type="button" onClick={onPrevStep}>
+        <button type='button' onClick={onPrevStep}>
           Back
         </button>
-        <button type='submit'>
-          Next
-        </button>
+        <button type='submit'>Next</button>
       </form>
     </Card>
   );
