@@ -10,13 +10,12 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const [selectedProd, setSelectedProd] = useState<Array<string>>([]);
   const [products, setProducts] = useState(null);
-  const { makeGet } = httpService();
   const { onNextStep } = useNavigation();
 
   useEffect(() => {
-    makeGet(
+    httpService.get(
       "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-    ).then((res) => setProducts(res));
+    ).then(res => setProducts(res.data));
   }, []);
 
   const handleSelect = (id: string) => {

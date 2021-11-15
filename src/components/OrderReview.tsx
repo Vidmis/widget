@@ -25,19 +25,23 @@ const OrderReview = () => {
   const { order } = useAppSelector((state) => state);
   const { onNextStep, onPrevStep } = useNavigation();
 
-  const { makeGet } = httpService();
   const [products, setProducts] = useState(null);
   const [userIp, setUserIp] = useState(null);
   const [taxes, setTaxes] = useState(null);
 
   useEffect(() => {
-    makeGet(
-      "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-    ).then((res) => setProducts(res));
-    makeGet("http://ipwhois.app/json/").then((res) => setUserIp(res));
-    makeGet(
-      "https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8"
-    ).then((res) => setTaxes(res));
+    httpService
+      .get("https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.log(err));
+    httpService
+      .get("http://ipwhois.app/json/")
+      .then((res) => setUserIp(res.data))
+      .catch((err) => console.log(err));
+    httpService
+      .get("https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8")
+      .then((res) => setTaxes(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
   const productsPrice = () => {

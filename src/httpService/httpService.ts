@@ -1,19 +1,17 @@
 import axios from "axios";
 
-const httpService = () => {
-  const makeGet = (url) =>
-    axios
-      .get(url)
-      .then((res) => res.data)
-      .catch((err) => err);
+const AxiosInstance = axios.create({
+  baseURL: "",
+});
 
-  const makePost = (url, data) =>
-    axios
-      .post(url, data)
-      .then((res) => res)
-      .catch((err) => err);
+const httpService = {
+  get: (url: string) => {
+    return AxiosInstance.get(url)
+  },
 
-  return { makeGet, makePost };
+  post: (url: string, data: any) => {
+    return AxiosInstance.post(url, data)
+  },
 };
 
 export default httpService;
