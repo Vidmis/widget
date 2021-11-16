@@ -5,17 +5,19 @@ import styles from "./Products.module.scss";
 import useNavigation from "../hooks/useNavigation";
 import { useAppDispatch } from "../app/hooks";
 import httpService from "../httpService/httpService";
+import { useTranslation } from "react-i18next";
 
 const Products = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [selectedProd, setSelectedProd] = useState<Array<string>>([]);
   const [products, setProducts] = useState(null);
   const { onNextStep } = useNavigation();
 
   useEffect(() => {
-    httpService.get(
-      "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
-    ).then(res => setProducts(res.data));
+    httpService
+      .get("https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96")
+      .then((res) => setProducts(res.data));
   }, []);
 
   const handleSelect = (id: string) => {
@@ -34,7 +36,7 @@ const Products = () => {
   return (
     <Card>
       <form className={styles.form_content} onSubmit={handleSumbit}>
-        <h3>Select product(s)</h3>
+        <h3>{t("products.select_header")}</h3>
         <ul>
           {products?.map(({ id, title, price }) => (
             <li
@@ -48,7 +50,7 @@ const Products = () => {
             </li>
           ))}
         </ul>
-        <button type='submit'>Next</button>
+        <button type='submit'>{t("products.next_button")}</button>
       </form>
     </Card>
   );

@@ -1,0 +1,9 @@
+{
+  "header": {
+    "main_header": "Pirkimo app'sas"
+  },
+  "products": {
+    "select_header": "Pasirinkite produktus",
+    "next_button": "Toliau"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "header": {
+    "main_header": "Shopping Widget"
+  },
+  "products": {
+    "select_header": "Select product(s)",
+    "next_button": "Next"
+  }
+}
