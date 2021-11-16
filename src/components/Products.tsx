@@ -36,7 +36,7 @@ const Products = () => {
   return (
     <Card>
       <form className={styles.form_content} onSubmit={handleSumbit}>
-        <h3>{t("products.select_header")}</h3>
+        <h3>{t("products.header")}</h3>
         <ul>
           {products?.map(({ id, title, price }) => (
             <li
@@ -50,7 +50,7 @@ const Products = () => {
             </li>
           ))}
         </ul>
-        <button type='submit'>{t("products.next_button")}</button>
+        <button type='submit'>{t("button.next")}</button>
       </form>
     </Card>
   );

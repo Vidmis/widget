@@ -2,8 +2,32 @@
   "header": {
     "main_header": "Shopping Widget"
   },
+  "button": {
+    "next": "Next",
+    "back": "Back",
+    "select_new": "Select new products"
+  },
   "products": {
-    "select_header": "Select product(s)",
-    "next_button": "Next"
+    "header": "Select product(s)"
+  },
+  "form": {
+    "header": "Contact details",
+    "placeholders": {
+      "user_name": "First name",
+      "last_name": "Second name",
+      "email": "Email"
+    }
+  },
+  "order_review": {
+    "main_header": "Order review",
+    "inner_headers": {
+      "products": "Products",
+      "contact": "Contacts",
+      "price": "Price",
+      "total": "Total"
+    }
+  },
+  "completed": {
+    "header": "Order completed"
   }
 }

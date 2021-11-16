@@ -2,8 +2,32 @@
   "header": {
     "main_header": "Pirkimo app'sas"
   },
+  "button": {
+    "next": "Toliau",
+    "back": "Atgal",
+    "select_new": "Naujas pasirinkimas"
+  },
   "products": {
-    "select_header": "Pasirinkite produktus",
-    "next_button": "Toliau"
+    "header": "Pasirinkite produktus"
+  },
+  "form": {
+    "header": "Kontaktai",
+    "placeholders": {
+      "user_name": "Vardas",
+      "last_name": "Pavardė",
+      "email": "El. paštas"
+    }
+  },
+  "order_review": {
+    "main_header": "Užsakymas",
+    "inner_headers": {
+      "products": "Prekės",
+      "contact": "Kontaktai",
+      "price": "Kaina",
+      "total": "Bendra kaina"
+    }
+  },
+  "completed": {
+    "header": "Užsakymas baigtas"
   }
 }

@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
@@ -13,6 +14,7 @@ interface Contacts {
 const ContactForm = () => {
   const dispatch = useDispatch();
   const { onNextStep, onPrevStep } = useNavigation();
+  const { t } = useTranslation();
 
   const initialValues: Contacts = {
     firstName: "",
@@ -43,11 +45,11 @@ const ContactForm = () => {
   return (
     <Card>
       <form onSubmit={handleSubmit} className='contact-card'>
-        <h3>Contact details</h3>
+        <h3>{t("form.header")}</h3>
         <div>
           <input
             type='text'
-            placeholder='Enter user name'
+            placeholder={t("form.placeholders.user_name")}
             name='firstName'
             value={firstName}
             autoComplete='given-name'
@@ -58,7 +60,7 @@ const ContactForm = () => {
         <div>
           <input
             type='text'
-            placeholder='Enter last name'
+            placeholder={t("form.placeholders.last_name")}
             name='lastName'
             value={lastName}
             autoComplete='family-name'
@@ -69,7 +71,7 @@ const ContactForm = () => {
         <div>
           <input
             type='email'
-            placeholder='Enter email'
+            placeholder={t("form.placeholders.email")}
             name='email'
             value={email}
             autoComplete='email'
@@ -78,9 +80,9 @@ const ContactForm = () => {
         </div>
 
         <button type='button' onClick={onPrevStep}>
-          Back
+          {t("button.back")}
         </button>
-        <button type='submit'>Next</button>
+        <button type='submit'>{t("button.next")}</button>
       </form>
     </Card>
   );
