@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addPrice, addTaxes } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
@@ -27,6 +28,7 @@ const OrderReview = () => {
   const [products, setProducts] = useState(null);
   const [userIp, setUserIp] = useState(null);
   const [taxes, setTaxes] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     httpService
@@ -84,9 +86,9 @@ const OrderReview = () => {
   return (
     <Card>
       <div>
-        <h3>Order Review</h3>
+        <h3>{t("order_review.main_header")}</h3>
         <div className='products-cont'>
-          <h4>Products</h4>
+          <h4>{t("order_review.inner_headers.products")}</h4>
           <ul>
             {products
               ?.filter((prod) => order?.products.includes(prod.id))
@@ -99,7 +101,7 @@ const OrderReview = () => {
         </div>
 
         <div className='contact-cont'>
-          <h4>Contact</h4>
+          <h4>{t("order_review.inner_headers.contact")}</h4>
           <div>
             <label htmlFor='name'>Name </label>
             <span id='name'>
@@ -109,7 +111,7 @@ const OrderReview = () => {
         </div>
 
         <div className='price-cont'>
-          <h4>Price</h4>
+          <h4>{t("order_review.inner_headers.price")}</h4>
           <div>
             <label htmlFor='products'>Products </label>
             <span id='products'>{priceSummary.netTotal?.toFixed(2)} €</span>
@@ -121,7 +123,7 @@ const OrderReview = () => {
         </div>
 
         <div className='total-cont'>
-          <h4>Total</h4>
+          <h4>{t("order_review.inner_headers.total")}</h4>
           <div>
             <label htmlFor='total'>Taxes </label>
             <span id='total'>{priceSummary.grossTotal.toFixed(2)} €</span>
@@ -129,10 +131,10 @@ const OrderReview = () => {
         </div>
 
         <button type='button' onClick={onPrevStep}>
-          Back
+          {t("button.back")}
         </button>
         <button type='button' onClick={handleClick}>
-          Next
+          {t("button.next")}
         </button>
       </div>
     </Card>
