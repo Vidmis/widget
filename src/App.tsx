@@ -15,7 +15,7 @@ const App = () => {
     i18n.changeLanguage(lang);
   };
 
-  const onClickNext = () => {
+  const onRenderStep = () => {
     switch (step) {
       case 0:
         return <Products />;
@@ -34,7 +34,7 @@ const App = () => {
         <h1>{t("header.main_header")}</h1>
         <button onClick={() => handleLangSelect("en")}>English</button>
         <button onClick={() => handleLangSelect("lt")}>Lietuvių</button>
-        {onClickNext()}
+        {onRenderStep()}
       </div>
     </>
   );
