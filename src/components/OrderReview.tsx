@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addPrice, addTaxes } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
 import httpService from "../httpService/httpService";
-import Card from "./styles/CardUi/Card";
+import Card, {Button} from "./styles/CardUi/Card";
 
 interface PriceSummary {
   netTotal: number;
@@ -130,12 +130,12 @@ const OrderReview = () => {
           </div>
         </div>
 
-        <button type='button' onClick={onPrevStep}>
+        <Button type='button' onClick={onPrevStep}>
           {t("button.back")}
-        </button>
-        <button type='button' onClick={handleClick}>
+        </Button>
+        <Button type='button' onClick={handleClick}>
           {t("button.next")}
-        </button>
+        </Button>
       </div>
     </Card>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { addProduct } from "../features/orderSlice";
-import Card from "./styles/CardUi/Card.js";
+import Card, { Button } from "./styles/CardUi/Card";
 import styles from "./Products.module.scss";
 import useNavigation from "../hooks/useNavigation";
 import { useAppDispatch } from "../app/hooks";
@@ -42,15 +42,15 @@ const Products = () => {
             <li
               key={id}
               onClick={() => handleSelect(id)}
-              style={
-                selectedProd.includes(id) ? { background: "purple" } : null
-              }
+              className={`${
+                selectedProd.includes(id) ? styles.item_select : null
+              }`}
             >
               {title} - {price.amount} €
             </li>
           ))}
         </ul>
-        <button type='submit'>{t("button.next")}</button>
+        <Button>{t("button.next")}</Button>
       </form>
     </Card>
   );

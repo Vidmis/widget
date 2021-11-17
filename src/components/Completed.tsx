@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useNavigation from "../hooks/useNavigation";
-import Card from "./styles/CardUi/Card";
+import Card, {Button} from "./styles/CardUi/Card";
 import { resetValues } from "../features/orderSlice";
 import { useAppSelector } from "../app/hooks";
 import httpService from "../httpService/httpService";
@@ -31,9 +31,9 @@ const Completed = () => {
     <Card>
       <div>
         <h2>{t("completed.header")}</h2>
-        <button type='button' onClick={handleClick}>
+        <Button type='button' onClick={handleClick}>
           {t("button.select_new")}
-        </button>
+        </Button>
       </div>
     </Card>
   );

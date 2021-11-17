@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
-import Card from "./styles/CardUi/Card";
+import Card, {Button} from "./styles/CardUi/Card";
 
 interface Contacts {
   firstName: string;
@@ -79,10 +79,10 @@ const ContactForm = () => {
           />
         </div>
 
-        <button type='button' onClick={onPrevStep}>
+        <Button type='button' onClick={onPrevStep}>
           {t("button.back")}
-        </button>
-        <button type='submit'>{t("button.next")}</button>
+        </Button>
+        <Button>{t("button.next")}</Button>
       </form>
     </Card>
   );
