@@ -12,7 +12,9 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const [selectedProd, setSelectedProd] = useState<Array<string>>([]);
   const [products, setProducts] = useState(null);
-  const { onNextStep } = useNavigation();
+  const { onNextStep, selectStep } = useNavigation();
+
+  // selectStep(1)
 
   useEffect(() => {
     httpService

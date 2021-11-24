@@ -1,0 +1,21 @@
+.form_content {
+  display: grid;
+  grid-template-rows: 6rem 8rem 5rem;
+  width: 15rem;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .buttons {
+    display: flex;
+    width: 12rem;
+    justify-content: space-between;
+    button {
+      margin: 5px;
+    }
+  }
+}

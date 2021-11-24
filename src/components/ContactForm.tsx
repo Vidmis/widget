@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { addContacts } from "../features/orderSlice";
 import useNavigation from "../hooks/useNavigation";
-import Card, {Button} from "./styles/CardUi/Card";
+import Card, { Button } from "./styles/CardUi/Card";
+import styles from "./ContactForm.module.scss";
 
 interface Contacts {
   firstName: string;
@@ -44,45 +45,49 @@ const ContactForm = () => {
 
   return (
     <Card>
-      <form onSubmit={handleSubmit} className='contact-card'>
+      <form onSubmit={handleSubmit} className={styles.form_content}>
         <h3>{t("form.header")}</h3>
-        <div>
-          <input
-            type='text'
-            placeholder={t("form.placeholders.user_name")}
-            name='firstName'
-            value={firstName}
-            autoComplete='given-name'
-            onChange={handleChange}
-          />
+        <div className='input-content'>
+          <div>
+            <input
+              type='text'
+              placeholder={t("form.placeholders.user_name")}
+              name='firstName'
+              value={firstName}
+              autoComplete='given-name'
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <input
+              type='text'
+              placeholder={t("form.placeholders.last_name")}
+              name='lastName'
+              value={lastName}
+              autoComplete='family-name'
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <input
+              type='email'
+              placeholder={t("form.placeholders.email")}
+              name='email'
+              value={email}
+              autoComplete='email'
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
-        <div>
-          <input
-            type='text'
-            placeholder={t("form.placeholders.last_name")}
-            name='lastName'
-            value={lastName}
-            autoComplete='family-name'
-            onChange={handleChange}
-          />
+        <div className={styles.buttons}>
+          <Button type='button' onClick={onPrevStep}>
+            {t("button.back")}
+          </Button>
+          <Button>{t("button.next")}</Button>
         </div>
-
-        <div>
-          <input
-            type='email'
-            placeholder={t("form.placeholders.email")}
-            name='email'
-            value={email}
-            autoComplete='email'
-            onChange={handleChange}
-          />
-        </div>
-
-        <Button type='button' onClick={onPrevStep}>
-          {t("button.back")}
-        </Button>
-        <Button>{t("button.next")}</Button>
       </form>
     </Card>
   );
