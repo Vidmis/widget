@@ -22,6 +22,7 @@ const Completed = () => {
       .then((res) => console.log(res.data));
   }, [order]);
 
+
   const handleClick = () => {
     dispatch(resetValues());
     selectStep(0);
