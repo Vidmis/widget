@@ -1,0 +1,14 @@
+.completed_wrapper {
+  display: grid;
+  grid-template-rows: 4rem 5rem;
+  align-items: center;
+  justify-items: center;
+
+  .button {
+    width: 169px;
+  }
+}
+
+.compl_card {
+  height: 240px;
+}
