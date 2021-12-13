@@ -1,0 +1,32 @@
+.form_content {
+  display: grid;
+  grid-template-rows: 6rem 8rem 5rem;
+  width: 15rem;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  .input_content {
+    input {
+      box-shadow: 0px 0px 14px 2px rgb(138 145 151 / 20%);
+      border-radius: 8px;
+      padding: 6px 14px;
+      margin: 4px 0px;
+      height: 32px;
+      width: 200px;
+      font-size: 14px;
+    }
+  }
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .buttons {
+    display: flex;
+    width: 12rem;
+    justify-content: space-between;
+    button {
+      margin: 5px;
+    }
+  }
+}

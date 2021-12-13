@@ -4,6 +4,7 @@
 .pnp.js
 /dist
 /coverage
+/.vscode
 
 # production
 /build

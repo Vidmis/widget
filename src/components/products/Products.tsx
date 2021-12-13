@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { addProduct } from "../features/orderSlice";
-import Card from "./styles/CardUi/Card.js";
+import { addProduct } from "../../features/orderSlice";
+import Card, { Button } from "../styles/CardUi/Card";
 import styles from "./Products.module.scss";
-import useNavigation from "../hooks/useNavigation";
-import { useAppDispatch } from "../app/hooks";
-import httpService from "../httpService/httpService";
+import useNavigation from "../../hooks/useNavigation";
+import { useAppDispatch } from "../../app/hooks";
+import httpService from "../../httpService/httpService";
 import { useTranslation } from "react-i18next";
 
 const Products = () => {
@@ -15,9 +15,13 @@ const Products = () => {
   const { onNextStep } = useNavigation();
 
   useEffect(() => {
+    const abortCont = new AbortController();
+
     httpService
       .get("https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96")
       .then((res) => setProducts(res.data));
+
+    return () => abortCont.abort();
   }, []);
 
   const handleSelect = (id: string) => {
@@ -42,15 +46,15 @@ const Products = () => {
             <li
               key={id}
               onClick={() => handleSelect(id)}
-              style={
-                selectedProd.includes(id) ? { background: "purple" } : null
-              }
+              className={`${
+                selectedProd.includes(id) ? styles.item_select : null
+              }`}
             >
               {title} - {price.amount} €
             </li>
           ))}
         </ul>
-        <button type='submit'>{t("button.next")}</button>
+        <Button>{t("button.next")}</Button>
       </form>
     </Card>
   );
