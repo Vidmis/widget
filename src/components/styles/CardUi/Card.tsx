@@ -1,20 +1,20 @@
-import React, { ComponentPropsWithRef, MouseEventHandler } from "react";
+import React, { ComponentPropsWithoutRef, ComponentPropsWithRef } from "react";
 import styles from "./Card.module.scss";
 import buttonStyles from "../../styles/Button.module.scss";
 
-const Card = ({ children }) => {
+interface CardProps extends ComponentPropsWithRef<"div"> {}
+
+const Card: React.FC<CardProps> = ({ children, className = "", ...rest }) => {
   return (
     <>
-      <div className={styles.card}>{children}</div>
+      <div className={`${styles.card} ${className}`} {...rest}>
+        {children}
+      </div>
     </>
   );
 };
 
-// interface ButtonProps {
-//   onClick?: MouseEventHandler<HTMLButtonElement>
-// }
-
-interface ButtonProps extends ComponentPropsWithRef<"button"> {}
+interface ButtonProps extends ComponentPropsWithoutRef<"button"> {}
 
 export const Button: React.FC<ButtonProps> = ({
   children,

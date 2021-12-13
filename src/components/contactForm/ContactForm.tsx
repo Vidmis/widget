@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { addContacts } from "../features/orderSlice";
-import useNavigation from "../hooks/useNavigation";
-import Card, { Button } from "./styles/CardUi/Card";
+import { addContacts } from "../../features/orderSlice";
+import useNavigation from "../../hooks/useNavigation";
+import Card, { Button } from "../styles/CardUi/Card";
 import styles from "./ContactForm.module.scss";
 
 interface Contacts {
@@ -47,7 +47,7 @@ const ContactForm = () => {
     <Card>
       <form onSubmit={handleSubmit} className={styles.form_content}>
         <h3>{t("form.header")}</h3>
-        <div className='input-content'>
+        <div className={styles.input_content}>
           <div>
             <input
               type='text'

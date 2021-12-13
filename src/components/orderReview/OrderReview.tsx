@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addPrice, addTaxes } from "../features/orderSlice";
-import useNavigation from "../hooks/useNavigation";
-import httpService from "../httpService/httpService";
-import Card, { Button } from "./styles/CardUi/Card";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addPrice, addTaxes } from "../../features/orderSlice";
+import useNavigation from "../../hooks/useNavigation";
+import httpService from "../../httpService/httpService";
+import Card, { Button } from "../styles/CardUi/Card";
+import styles from "./OrderReview.module.scss";
 
 interface PriceSummary {
   netTotal: number;
@@ -31,19 +32,6 @@ const OrderReview = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // httpService
-    //   .get("https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96")
-    //   .then((res) => setProducts(res.data))
-    //   .catch((err) => console.log(err));
-    // httpService
-    //   .get("http://ipwhois.app/json/")
-    //   .then((res) => setUserIp(res.data))
-    //   .catch((err) => console.log(err));
-    // httpService
-    //   .get("https://run.mocky.io/v3/fdaf218e-8fb8-4548-92ce-1a505c81d9c8")
-    //   .then((res) => setTaxes(res.data))
-    //   .catch((err) => console.log(err));
-
     Promise.all([
       httpService.get(
         "https://run.mocky.io/v3/b5eb9a17-4e56-4841-bb9a-094cd3fcec96"
@@ -100,58 +88,63 @@ const OrderReview = () => {
   };
 
   return (
-    <Card>
-      <div>
+    <Card className={styles.order_card_wrapper}>
+      <div className={styles.order_wrapper}>
         <h3>{t("order_review.main_header")}</h3>
-        <div className='products-cont'>
-          <h4>{t("order_review.inner_headers.products")}</h4>
-          <ul>
-            {products
-              ?.filter((prod) => order?.products.includes(prod.id))
-              .map(({ id, title, price }) => (
-                <li key={id}>
-                  {title} {price.amount} €
-                </li>
-              ))}
-          </ul>
-        </div>
 
-        <div className='contact-cont'>
-          <h4>{t("order_review.inner_headers.contact")}</h4>
-          <div>
-            <label htmlFor='name'>Name </label>
-            <span id='name'>
-              {order?.contacts.firstName} {order?.contacts.lastName}
-            </span>
+        <div className={styles.details_wrapper}>
+          <div className={styles.products}>
+            <h4>{t("order_review.inner_headers.products")}</h4>
+            <ul>
+              {products
+                ?.filter((prod) => order?.products.includes(prod.id))
+                .map(({ id, title, price }) => (
+                  <li key={id}>
+                    {title} {price.amount} €
+                  </li>
+                ))}
+            </ul>
+          </div>
+
+          <div className='contact-cont'>
+            <h4>{t("order_review.inner_headers.contact")}</h4>
+            <div>
+              <label htmlFor='name'>Name </label>
+              <span id='name'>
+                {order?.contacts.firstName} {order?.contacts.lastName}
+              </span>
+            </div>
+          </div>
+
+          <div className='price-cont'>
+            <h4>{t("order_review.inner_headers.price")}</h4>
+            <div>
+              <label htmlFor='products'>Products </label>
+              <span id='products'>{priceSummary.netTotal?.toFixed(2)} €</span>
+            </div>
+            <div>
+              <label htmlFor='taxes'>Taxes </label>
+              <span id='taxes'>{priceSummary.taxes.toFixed(2)} €</span>
+            </div>
+          </div>
+
+          <div className='total-cont'>
+            <h4>{t("order_review.inner_headers.total")}</h4>
+            <div>
+              <label htmlFor='total'>Taxes </label>
+              <span id='total'>{priceSummary.grossTotal.toFixed(2)} €</span>
+            </div>
           </div>
         </div>
 
-        <div className='price-cont'>
-          <h4>{t("order_review.inner_headers.price")}</h4>
-          <div>
-            <label htmlFor='products'>Products </label>
-            <span id='products'>{priceSummary.netTotal?.toFixed(2)} €</span>
-          </div>
-          <div>
-            <label htmlFor='taxes'>Taxes </label>
-            <span id='taxes'>{priceSummary.taxes.toFixed(2)} €</span>
-          </div>
+        <div className={styles.buttons_wrapper}>
+          <Button type='button' onClick={onPrevStep}>
+            {t("button.back")}
+          </Button>
+          <Button type='button' onClick={handleClick}>
+            {t("button.next")}
+          </Button>
         </div>
-
-        <div className='total-cont'>
-          <h4>{t("order_review.inner_headers.total")}</h4>
-          <div>
-            <label htmlFor='total'>Taxes </label>
-            <span id='total'>{priceSummary.grossTotal.toFixed(2)} €</span>
-          </div>
-        </div>
-
-        <Button type='button' onClick={onPrevStep}>
-          {t("button.back")}
-        </Button>
-        <Button type='button' onClick={handleClick}>
-          {t("button.next")}
-        </Button>
       </div>
     </Card>
   );
